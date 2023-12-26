@@ -250,9 +250,10 @@
     <mat-table #table [dataSource]="results" *ngIf="loadData">
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Species Name </mat-header-cell>
         <mat-cell *matCellDef="let results"> <a href="{{results.url}}"> {{results.name}} </a></mat-cell>
       </ng-container>
+      
       <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
       <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
     </mat-table>

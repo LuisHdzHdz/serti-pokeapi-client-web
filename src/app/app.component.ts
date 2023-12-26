@@ -15,6 +15,12 @@ export class AppComponent {
   loadData = false;
   idEvChain: any;
   evolutionChain: any;
+  chain: any;
+  evolvesTo: any;
+  species: any;
+  evolDetails : any[] = [];
+  numberOfEvolutions : any;
+  loadChain = false;
 
   constructor(private httpService: ClientHttpService) {}
   
@@ -32,8 +38,39 @@ export class AppComponent {
 
   getEvolutionChain() {
     this.httpService.getEvolutionChain(this.idEvChain).subscribe(
+    
     (response) => { 
       this.evolutionChain = response;
+      this.chain = this.evolutionChain.chain;
+      this.evolvesTo = this.chain.evolves_to;
+      this.species = this.chain.evolves_to.species;
+      this.evolDetails.splice(0,this.evolDetails.length);
+      do{
+      this.numberOfEvolutions = this.chain['evolves_to'].length;
+      this.evolDetails.push({
+        "species_name": this.chain.species.name,
+        "min_level": !this.chain ? 1 : this.chain.min_level,
+        //"trigger_name": !this.chain ? null : this.chain.trigger.name,
+        "item": !this.chain ? null : this.chain.item
+      });
+
+      if(this.numberOfEvolutions > 1) {
+        for (let i = 1;i < this.numberOfEvolutions; i++) { 
+          this.evolDetails.push({
+            "species_name": this.chain.evolves_to[i].species.name,
+            "min_level": !this.chain.evolves_to[i]? 1 : this.chain.evolves_to[i].min_level,
+            "trigger_name": !this.chain.evolves_to[i]? null : this.chain.evolves_to[i].trigger.name,
+            "item": !this.chain.evolves_to[i]? null : this.chain.evolves_to[i].item
+         });
+        }
+      }
+
+      this.chain = this.chain['evolves_to'][0];
+    }while(!!this.chain && this.chain.hasOwnProperty('evolves_to')){
+      this.loadChain = true;
+      console.log("chain:"+JSON.stringify(this.evolDetails));
+    }
+
     },
     (error) => { console.log(error); });
   }
