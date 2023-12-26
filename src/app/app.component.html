@@ -62,69 +62,6 @@
     margin-right: 8px;
   }
 
-  .card svg.material-icons path {
-    fill: #888;
-  }
-
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 16px;
-  }
-
-  .card {
-    all: unset;
-    border-radius: 4px;
-    border: 1px solid #eee;
-    background-color: #fafafa;
-    height: 40px;
-    width: 200px;
-    margin: 0 8px 16px;
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s ease-in-out;
-    line-height: 24px;
-  }
-
-  .card-container .card:not(:last-child) {
-    margin-right: 0;
-  }
-
-  .card.card-small {
-    height: 16px;
-    width: 168px;
-  }
-
-  .card-container .card:not(.highlight-card) {
-    cursor: pointer;
-  }
-
-  .card-container .card:not(.highlight-card):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
-  }
-
-  .card-container .card:not(.highlight-card):hover .material-icons path {
-    fill: rgb(105, 103, 103);
-  }
-
-  .card.highlight-card {
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-    border: none;
-    width: auto;
-    min-width: 30%;
-    position: relative;
-  }
-
-  .card.card.highlight-card span {
-    margin-left: 60px;
-  }
 
   svg#rocket {
     width: 80px;
@@ -152,26 +89,6 @@
     color: #125699;
   }
 
-
-  .circle-link {
-    height: 40px;
-    width: 40px;
-    border-radius: 40px;
-    margin: 8px;
-    background-color: white;
-    border: 1px solid #eeeeee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: 1s ease-out;
-  }
-
-  .circle-link:hover {
-    transform: translateY(-0.25rem);
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
-  }
 
   footer {
     margin-top: 8px;
@@ -240,7 +157,7 @@
   <div>
 
     <mat-form-field>
-      <input matInput [(ngModel)]="idEvChain" type="number" placeholder="Id pokemon">
+      <input matInput [(ngModel)]="idEvChain" type="text" placeholder="Id pokemon">
     </mat-form-field>
     <button (click)="getEvolutionChain()">Find</button>
   </div>
@@ -250,13 +167,27 @@
     <mat-table #table [dataSource]="results" *ngIf="loadData">
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Species Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
         <mat-cell *matCellDef="let results"> <a href="{{results.url}}"> {{results.name}} </a></mat-cell>
       </ng-container>
+
       
       <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
       <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
     </mat-table>
+
+    <mat-table #table [dataSource]="evolDetails" *ngIf="loadChain">
+
+      <ng-container matColumnDef="species_name">
+        <mat-header-cell *matHeaderCellDef> Species name</mat-header-cell>
+        <mat-cell *matCellDef="let evolDetails"> {{evolDetails.species_name}}</mat-cell>
+      </ng-container>
+
+      
+      <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
+    </mat-table>
+
   </div>
 
 </div>
